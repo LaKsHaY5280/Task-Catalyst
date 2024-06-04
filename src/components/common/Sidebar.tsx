@@ -1,4 +1,5 @@
 "use client";
+import { ModeToggle } from "../ThemeToggleButton";
 import ClientButton from "./ClientButton";
 import RedirectButton from "./RedirectButton";
 import { signOutAccount } from "@/lib/actions/user";
@@ -15,6 +16,8 @@ const Sidebar = () => {
   return (
     <div className="fixed flex h-screen w-2/12 flex-col items-start justify-between border-r-2 border-violet-950 py-10">
       <RedirectButton href="/" name="Task Catalyst" varient="outline" />
+
+      <ModeToggle />
 
       <div className="flex w-full flex-col items-center justify-center gap-7">
         <RedirectButton href="/app" name="Dashboard" varient="outline" />

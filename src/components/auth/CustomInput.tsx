@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import { authFormSchema } from "@/lib/validation/user";
 import { z } from "zod";
 import { Control, FieldPath } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 const CustomInput = ({
   control,
@@ -27,26 +28,41 @@ const CustomInput = ({
 }) => {
   const SignupValidation = authFormSchema(type);
   return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className=" w-full">
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input
-              className=" w-full border-none bg-violet-200"
-              placeholder={placeholder}
-              {...field}
-              type={inputType}
-              autoComplete="true"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+    <LabelInputContainer>
+      <FormField
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <FormControl>
+              <Input
+                placeholder={placeholder}
+                {...field}
+                type={inputType}
+                autoComplete="true"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </LabelInputContainer>
   );
 };
 
 export default CustomInput;
+
+const LabelInputContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("flex w-full flex-col space-y-2", className)}>
+      {children}
+    </div>
+  );
+};
