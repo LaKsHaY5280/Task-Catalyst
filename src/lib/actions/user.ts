@@ -1,9 +1,10 @@
 "use server";
 
 import { ID, Query } from "node-appwrite";
-import { INewUser, config } from "../types";
 import { createAdminClient, createSessionClient } from "../server";
 import { cookies } from "next/headers";
+import { INewUser } from "../types/user";
+import { config } from "../utils";
 
 // ============================================================
 // AUTH

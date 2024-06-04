@@ -1,7 +1,7 @@
 "use server";
 import { Client, Account, Databases, Storage, Avatars } from "node-appwrite";
 import { cookies } from "next/headers";
-import { config } from "./types";
+import { config } from "./utils";
 
 export async function createSessionClient() {
   const client = new Client()
