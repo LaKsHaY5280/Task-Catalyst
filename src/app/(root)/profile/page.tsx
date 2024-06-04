@@ -1,25 +1,31 @@
+import ProfileForm from "@/components/preference/profile/ProfileForm";
 import { getCurrentUser } from "@/lib/actions/user";
 
 const ProfilePage = async () => {
   const user = await getCurrentUser();
+
+  if (!user) throw new Error("User not found");
+
   return (
-    <div>
-      <h1>Edit Profile</h1>
-      <form>
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" name="username" />
+    <div className="flex h-full w-full flex-col items-center justify-start gap-10 p-10">
+      <h1 className="w-full text-4xl">Edit Profile</h1>
 
-        <label htmlFor="name">Name:</label>
-        <input type="text" id="name" name="name" />
-
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" name="email" />
-
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" />
-
-        <button type="submit">Save</button>
-      </form>
+      <ProfileForm user={user} />
+      {/* <div className="h-full">
+        <div className="h-60 w-60 bg-violet-300"></div>
+      </div> */}
+      <div className="w-full">
+        <div>name</div>
+        <div>username</div>
+        <div>email</div>
+        <div>Course</div>
+        <div>bio</div>
+        <div>timetable</div>
+        <div>syllabus</div>
+        <div>datesheet</div>
+        <div>recent todos</div>
+        <div>notes</div>
+      </div>
     </div>
   );
 };
