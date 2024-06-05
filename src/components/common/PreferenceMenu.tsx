@@ -46,21 +46,17 @@ const PreferenceMenu = ({ user }: { user: Models.Document }) => {
     router.push("/login");
   };
 
-  const { name } = user;
+  const { fname, lname } = user;
 
-  const initials = name
-    .split(" ")
-    .map((n: string) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const initials =
+    fname.charAt(0).toUpperCase() + lname.charAt(0).toUpperCase();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="h-full rounded-full border-2 border-primary p-0">
           <Avatar className="h-10 w-10">
-            <AvatarImage src="" />
+            <AvatarImage src={user.imageUrl} />
             <AvatarFallback className="text-xl text-primary dark:text-white">
               {initials}
             </AvatarFallback>
@@ -68,7 +64,9 @@ const PreferenceMenu = ({ user }: { user: Models.Document }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>{name}</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {fname} {lname}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <CustomDropdownMenuItem

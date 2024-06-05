@@ -18,7 +18,7 @@ export async function createUserAccount(user: INewUser) {
       ID.unique(),
       user.email,
       user.password,
-      user.name
+      `${user.fname} ${user.lname}`,
     );
 
     if (!newAccount) throw Error;
@@ -26,12 +26,21 @@ export async function createUserAccount(user: INewUser) {
     // const avatarUrl= new URL(avatars.getInitials(user.name).toString());
     // console.log(avatarUrl);
 
+    const avatarUrl = new URL(
+      `https://ui-avatars.com/api/?name=${user.fname}+${user.lname}&background=random&color=FFFFFF&bold=true&size=128`,
+    );
+
+    const username = user.username.startsWith("@") ? user.username : `@${user.username}`;
+
+
+
     const newUser = await saveUserToDB({
       userId: newAccount.$id,
-      name: newAccount.name,
+      fname: user.fname,
+      lname: user.lname,
       email: newAccount.email,
-      username: user.username,
-      // imageUrl: "" as unknown as URL,
+      username: username,
+      imageUrl: avatarUrl,
     });
 
     await signInAccount({ email: user.email, password: user.password });
@@ -47,7 +56,8 @@ export async function createUserAccount(user: INewUser) {
 export async function saveUserToDB(user: {
   userId: string;
   email: string;
-  name: string;
+  fname: string;
+  lname: string;
   imageUrl?: URL;
   username?: string;
 }) {
@@ -58,7 +68,7 @@ export async function saveUserToDB(user: {
       config.databaseId!,
       config.userCollectionId!,
       ID.unique(),
-      user
+      user,
     );
 
     return newUser;
@@ -74,7 +84,7 @@ export async function signInAccount(user: { email: string; password: string }) {
 
     const session = await account.createEmailPasswordSession(
       user.email,
-      user.password
+      user.password,
     );
 
     cookies().set("task-catalyst-session", session.secret, {
@@ -87,7 +97,7 @@ export async function signInAccount(user: { email: string; password: string }) {
     return session;
   } catch (error) {
     throw new Error(
-      "There was an error signing in. Please check your email and password."
+      "There was an error signing in. Please check your email and password.",
     );
   }
 }
@@ -114,7 +124,7 @@ export async function getCurrentUser() {
     const currentUser = await databases.listDocuments(
       config.databaseId!,
       config.userCollectionId!,
-      [Query.equal("userId", currentAccount.$id)]
+      [Query.equal("userId", currentAccount.$id)],
     );
 
     if (!currentUser) throw Error;
@@ -137,3 +147,28 @@ export async function signOutAccount() {
     console.log(error);
   }
 }
+
+// export async function setAvatar() {
+//   try {
+//     const { avatars } = await createAdminClient();
+
+//     const user = await getCurrentUser();
+//     if (!user) throw Error;
+
+//     const arrayBuffer = avatars.getInitials(user.name);
+//     const avatarUrl = Buffer.from(arrayBuffer.toString()).toString("base64");
+
+//     const byteCharacters = atob(avatarUrl);
+//     const byteNumbers = new Array(byteCharacters.length);
+//     for (let i = 0; i < byteCharacters.length; i++) {
+//       byteNumbers[i] = byteCharacters.charCodeAt(i);
+//     }
+//     const byteArray = new Uint8Array(byteNumbers);
+//     const blob = new Blob([byteArray], { type: "image/png" });
+//     const url = URL.createObjectURL(blob);
+
+//     return url;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }

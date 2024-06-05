@@ -5,8 +5,8 @@ import Link from "next/link";
 const HomePage = async () => {
   const user = await getCurrentUser();
   return (
-    <div className=" flex justify-around">
-      <div>{user?.name}</div>
+    <div className="flex justify-around">
+      <div>{user?.fname}</div>
       <div>HomePage</div>
       <div>
         <Button>

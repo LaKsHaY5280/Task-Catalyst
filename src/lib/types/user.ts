@@ -1,13 +1,15 @@
 export interface IUser {
   id: string;
-  name: string;
+  fname: string;
+  lname: string;
   username: string;
   email: string;
   imageUrl: string;
 }
 
 export interface INewUser {
-  name: string;
+  fname: string;
+  lname: string;
   email: string;
   username: string;
   password: string;
@@ -24,7 +26,8 @@ export interface IContextType {
 
 export interface IProfile {
   imageUrl: URL;
-  name: string;
+  fname: string;
+  lname: string;
   username: string;
   email: string;
   password: string;

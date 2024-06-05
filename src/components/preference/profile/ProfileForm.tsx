@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import CustomInput from "./CustomInput";
 import { Models } from "node-appwrite";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfileForm = ({ user }: { user: Models.Document }) => {
   const router = useRouter();
@@ -20,10 +21,10 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       imageUrl: user.imageUrl,
-      name: user.name,
+      fname: user.fname,
+      lname: user.lname,
       username: user.username,
       email: user.email,
-      password: user.password,
       bio: user.bio,
       course: user.course,
       year: user.year,
@@ -48,54 +49,105 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
     }
   }
 
+  const { fname, lname } = user;
+
+  const initials =
+    fname.charAt(0).toUpperCase() + lname.charAt(0).toUpperCase();
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex h-full w-full items-center justify-between gap-10 border-2 border-violet-400 p-10"
+        className="flex h-full w-full items-start justify-between gap-10 rounded-xl border-2 border-violet-400 p-10 shadow-[0px_0px_0px_5px_rgba(109,_40,_217,_0.4),_0px_0px_0px_10px_rgba(109,_40,_217,_0.3),_0px_0px_0px_15px_rgba(109,_40,_217,_0.2),_0px_0px_0px_20px_rgba(109,_40,_217,_0.1),_0px_0px_0px_25px_rgba(109,_40,_217,_0.05)]"
       >
-        <div className="h-full">
-          {user.imageUrl ? (
-            <Image
-              src={user.imageUrl}
-              alt={user.name}
-              className="h-60 w-60 bg-violet-300"
-            />
-          ) : (
-            <div className="h-60 w-60 bg-violet-300"></div>
-          )}
+        <div className="flex h-full flex-col items-center justify-start">
+          <Avatar className="h-52 w-52">
+            <AvatarImage src={user.imageUrl ? user.imageUrl : ""} />
+            <AvatarFallback className="text-9xl text-primary dark:text-white">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          {/* <div className="w-full">
+            <div>timetable</div>
+            <div>syllabus</div>
+            <div>datesheet</div>
+            <div>recent todos</div>
+            <div>notes</div>
+          </div> */}
         </div>
-        <div className="w-full">
-          <div className="flex items-center justify-between gap-3">
+        <div className="flex w-full flex-col items-center justify-center gap-5 px-10">
+          <div className="flex w-full flex-wrap items-center justify-between gap-3">
             <CustomInput
               control={form.control}
-              name="name"
-              label="Name"
-              placeholder="Your name"
+              name="fname"
+              label="First Name"
+              placeholder="Bruce"
+              itemClassName=" w-[49%]"
             />
             <CustomInput
               control={form.control}
-              name="username"
-              label="Username"
-              placeholder="Your username"
+              name="lname"
+              label="Last Name"
+              placeholder="Wayne"
+              itemClassName=" w-[49%]"
             />
           </div>
           <CustomInput
             control={form.control}
-            name="email"
-            label="Email"
-            placeholder="your email"
-            inputType="email"
+            name="username"
+            label="Username"
+            placeholder="@batman"
           />
           <CustomInput
             control={form.control}
-            name="password"
-            label="Password"
-            placeholder="your password"
-            inputType="password"
+            name="email"
+            label="Email"
+            placeholder="bruce.batman@wayne.alfred"
+            inputType="email"
           />
+
+          <CustomInput
+            control={form.control}
+            name="bio"
+            label="Bio"
+            placeholder="I am Batman🦇"
+            textArea
+          />
+          <div className="flex w-full flex-wrap items-center justify-between gap-3">
+            <CustomInput
+              control={form.control}
+              name="course"
+              label="Course"
+              placeholder="Computer Engineering"
+              itemClassName=" w-[49%]"
+            />
+            <CustomInput
+              control={form.control}
+              name="year"
+              label="Year"
+              placeholder="2050"
+              itemClassName=" w-[49%]"
+            />
+          </div>
+          <div className="flex w-full flex-wrap items-center justify-between gap-3">
+            <CustomInput
+              control={form.control}
+              name="semester"
+              label="Semester"
+              placeholder="6th"
+              itemClassName=" w-[49%]"
+            />
+            <CustomInput
+              control={form.control}
+              name="section"
+              label="Section"
+              placeholder="Morning - 2"
+              itemClassName=" w-[49%]"
+            />
+          </div>
+
           <Button className="w-full" type="submit">
-            Submit
+            Wanna Make Changes🖌️
           </Button>
         </div>
       </form>

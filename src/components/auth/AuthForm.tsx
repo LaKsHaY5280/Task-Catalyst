@@ -25,7 +25,8 @@ const AuthForm = ({ type }: { type: string }) => {
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
-      name: "",
+      fname: "",
+      lname: "",
       username: "",
       email: "",
       password: "",
@@ -38,7 +39,8 @@ const AuthForm = ({ type }: { type: string }) => {
     try {
       if (type === "Register") {
         const userData = {
-          name: data.name!,
+          fname: data.fname!,
+          lname: data.lname!,
           username: data.username!,
           email: data.email,
           password: data.password,
@@ -68,7 +70,7 @@ const AuthForm = ({ type }: { type: string }) => {
 
   return (
     <div className="mx-auto w-full max-w-md rounded-none bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
-      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+      <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
         {
           // sourcery skip: simplify-ternary
           type === "Login" ? "Login" : "Register"
@@ -86,18 +88,31 @@ const AuthForm = ({ type }: { type: string }) => {
         >
           {type === "Register" && (
             <>
-              <CustomInput
-                control={form.control}
-                name="name"
-                label="Name"
-                placeholder="Your name"
-                type={type}
-              />
+              <div className="flex w-full flex-wrap items-center justify-between gap-3">
+                <CustomInput
+                  control={form.control}
+                  name="fname"
+                  label="First Name"
+                  placeholder="Bruce"
+                  itemClassName="w-full"
+                  labelClassName="w-[45%]"
+                  type={type}
+                />
+                <CustomInput
+                  control={form.control}
+                  name="lname"
+                  label="Last Name"
+                  placeholder="Wayne"
+                  itemClassName="w-full"
+                  labelClassName="w-[45%]"
+                  type={type}
+                />
+              </div>
               <CustomInput
                 control={form.control}
                 name="username"
                 label="Username"
-                placeholder="Your username"
+                placeholder="@batman"
                 type={type}
               />
             </>
@@ -106,15 +121,16 @@ const AuthForm = ({ type }: { type: string }) => {
             control={form.control}
             name="email"
             label="Email"
-            placeholder="your email"
+            placeholder="bruce.batman@wayne.alfred"
             inputType="email"
             type={type}
           />
+
           <CustomInput
             control={form.control}
             name="password"
             label="Password"
-            placeholder="your password"
+            placeholder="********"
             inputType="password"
             type={type}
           />

@@ -18,6 +18,8 @@ const CustomInput = ({
   placeholder,
   inputType = "text",
   type,
+  itemClassName,
+  labelClassName,
 }: {
   control: Control<z.infer<typeof SignupValidation>>;
   name: FieldPath<z.infer<typeof SignupValidation>>;
@@ -25,15 +27,17 @@ const CustomInput = ({
   placeholder: string;
   inputType?: string;
   type: string;
+  itemClassName?: string;
+  labelClassName?: string;
 }) => {
   const SignupValidation = authFormSchema(type);
   return (
-    <LabelInputContainer>
+    <LabelInputContainer className={labelClassName}>
       <FormField
         control={control}
         name={name}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className={itemClassName}>
             <FormLabel>{label}</FormLabel>
             <FormControl>
               <Input
@@ -61,8 +65,6 @@ const LabelInputContainer = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex w-full flex-col space-y-2", className)}>
-      {children}
-    </div>
+    <div className={cn("flex w-full flex-col", className)}>{children}</div>
   );
 };
