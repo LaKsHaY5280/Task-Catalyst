@@ -4,12 +4,15 @@ import { Button } from "../ui/button";
 const RedirectButton = ({
   href,
   name,
+  children,
   varient,
   aClassName,
   className,
+  underline,
 }: {
   href: string;
-  name: string;
+  name?: string;
+  children?: React.ReactNode;
   varient?:
     | "link"
     | "default"
@@ -21,11 +24,15 @@ const RedirectButton = ({
     | undefined;
   aClassName?: string;
   className?: string;
+  underline?: boolean;
 }) => {
   return (
-    <Link href={href} className={`w-full px-3 ${aClassName}`}>
-      <Button variant={varient} className={`w-full bg-violet-600 ${className}`}>
-        {name}
+    <Link href={href} className={aClassName}>
+      <Button
+        variant={varient}
+        className={`w-full ${className} ${underline ? "underline" : ""} `}
+      >
+        {children || name}
       </Button>
     </Link>
   );

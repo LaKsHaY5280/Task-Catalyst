@@ -4,11 +4,13 @@ import { Button } from "../ui/button";
 
 const ClientButton = ({
   name,
+  children,
   varient,
   className,
   handleOnClick,
 }: {
-  name: string;
+  name?: string;
+  children?: React.ReactNode;
   varient?:
     | "default"
     | "destructive"
@@ -23,7 +25,7 @@ const ClientButton = ({
 }) => {
   return (
     <Button className={className} variant={varient} onClick={handleOnClick}>
-      {name}
+      {children || name}
     </Button>
   );
 };

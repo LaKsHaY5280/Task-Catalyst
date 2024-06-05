@@ -1,3 +1,4 @@
+import Navbar from "@/components/common/Navbar";
 import Sidebar from "@/components/common/Sidebar";
 import { getCurrentUser } from "@/lib/actions/user";
 import { redirect } from "next/navigation";
@@ -8,9 +9,9 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   if (!user) redirect("/login");
 
   return (
-    <div className="flex h-full w-full items-start justify-start">
-      <Sidebar />
-      <div className="ml-[16.666667%] flex h-full w-full">{children}</div>
+    <div className="flex h-full w-full flex-col items-start justify-start">
+      <Navbar user={user} />
+      <div className="flex h-full w-full">{children}</div>
     </div>
   );
 };

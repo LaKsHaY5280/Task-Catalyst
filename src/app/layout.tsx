@@ -7,6 +7,14 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Task Catalyst",
   description: "Task Catalyst is a task management app.",
+  applicationName: "Task Catalyst",
+  authors: {
+    url: "https://www.instagram.com/akuma._.lakshay",
+    name: "Lakshay Goyal",
+  },
+  keywords: ["Task", "Management", "App"],
+  creator: "Lakshay Goyal",
+  icons: "./logo.svg",
 };
 
 export default function RootLayout({
