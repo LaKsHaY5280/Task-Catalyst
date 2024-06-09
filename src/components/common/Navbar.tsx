@@ -40,25 +40,7 @@ const Navbar = ({ user }: { user: Models.Document }) => {
           />
           <RedirectButton
             href="/todo"
-            name="Deals"
-            varient="ghost"
-            className="hover:bg-transparent hover:text-primary"
-          />
-          <RedirectButton
-            href="/todo"
-            name="Records"
-            varient="ghost"
-            className="hover:bg-transparent hover:text-primary"
-          />
-          <RedirectButton
-            href="/todo"
-            name="Upcoming Partners"
-            varient="ghost"
-            className="hover:bg-transparent hover:text-primary"
-          />
-          <RedirectButton
-            href="/todo"
-            name="Team Management"
+            name="To Do"
             varient="ghost"
             className="hover:bg-transparent hover:text-primary"
           />

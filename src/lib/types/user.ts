@@ -25,17 +25,19 @@ export interface IContextType {
 }
 
 export interface IProfile {
-  imageUrl: URL;
+  userId: string;
   fname: string;
   lname: string;
   username: string;
   email: string;
-  password: string;
-  bio: string;
-  course: string;
-  year: number;
-  semester: number;
-  section: string;
+  // file: File[];
+  imageId: string;
+  imageUrl: URL | string;
+  bio?: string;
+  course?: string;
+  year?: number;
+  semester?: number;
+  section?: string;
   // timetable: string;
   // syllabus: string;
   // datesheet: string;

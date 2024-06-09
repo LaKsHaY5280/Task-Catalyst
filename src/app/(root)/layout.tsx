@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getCurrentUser();
 
-  if (!user) redirect("/login");
+  if (!user) {
+    redirect("/login");
+  }
 
   return (
     <div className="flex h-full w-full flex-col items-start justify-start">

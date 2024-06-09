@@ -28,16 +28,13 @@ export const authFormSchema = (type: string) =>
 
 // ============================== PROFILE SCHEMA
 export const profileSchema = z.object({
-  imageUrl: z.string().url().optional(),
+  file: z.custom<File[]>(),
   fname: z.string().min(2, { message: "Name must be at least 2 characters." }),
   lname: z.string().min(1, { message: "Name must be at least 1 character." }),
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." }),
   email: z.string().email(),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters." }),
   bio: z.string().optional(),
   course: z.string().optional(),
   year: z.number().optional(),

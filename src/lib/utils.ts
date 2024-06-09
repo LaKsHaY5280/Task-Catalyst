@@ -11,7 +11,8 @@ export const config = {
   databaseId: process.env.NEXT_PUBLIC_DATABASE_ID,
   userCollectionId: process.env.NEXT_PUBLIC_USERS_ID,
   todoCollectionId: process.env.NEXT_PUBLIC_TODOS_ID,
-  storageId: process.env.NEXT_PUBLIC_STORAGE_ID,
+  storageId: process.env.NEXT_ENV_APPWRITE_USERPIC_STORAGE_ID,
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
 };
 
+export const convertFileToUrl = (file: File) => URL.createObjectURL(file);

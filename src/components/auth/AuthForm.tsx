@@ -6,13 +6,18 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authFormSchema } from "@/lib/validation/user";
 import CustomInput from "./CustomInput";
-import { createUserAccount, signInAccount } from "@/lib/actions/user";
+import {
+  createUserAccount,
+  signInAccount,
+  signUpWithGoogle,
+} from "@/lib/actions/user";
 import { useRouter } from "next/navigation";
 import { INewUser } from "@/lib/types/user";
 import React from "react";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import BottomGradient from "../ui/BottomGradient";
+import CustomButton from "./CustomButton";
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
@@ -65,6 +70,15 @@ const AuthForm = ({ type }: { type: string }) => {
       console.log(error);
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function onGoogleSubmit() {
+    // Google Auth
+    const gauth = await signUpWithGoogle();
+
+    if (gauth) {
+      router.push("/");
     }
   }
 
@@ -134,63 +148,53 @@ const AuthForm = ({ type }: { type: string }) => {
             inputType="password"
             type={type}
           />
-          <Button
-            className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-            type="submit"
-          >
-            Submit
-            <BottomGradient />
-          </Button>
+          <CustomButton text={type} type="submit" />
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-
-          <div className="flex w-full items-center justify-between gap-5 pb-3">
-            <Button
-              className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-              type="submit"
-            >
-              <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-              <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                Google
-              </span>
-              <BottomGradient />
-            </Button>
-            <div className="h-[1.5px] w-4/12 rotate-90 bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-            <Button
-              className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-              type="submit"
-            >
-              <IconBrandFacebook className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-              <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                FaceBook
-              </span>
-              <BottomGradient />
-            </Button>
-          </div>
-          <div>
-            {type === "Register" ? (
-              <p>
-                Already have an account?{" "}
-                <a
-                  onClick={() => router.push("/login")}
-                  className="cursor-pointer text-violet-950"
-                >
-                  Login
-                </a>
-              </p>
-            ) : (
-              <p>
-                Don&apos;t have an account?{" "}
-                <a
-                  onClick={() => router.push("/register")}
-                  className="cursor-pointer underline underline-offset-2"
-                >
-                  Register
-                </a>
-              </p>
-            )}
-          </div>
         </form>
       </Form>
+      <div className="flex w-full items-center justify-between gap-5 pb-3">
+        <Button
+          className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+          onClick={onGoogleSubmit}
+        >
+          <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+            Google
+          </span>
+          <BottomGradient />
+        </Button>
+        <div className="h-[1.5px] w-4/12 rotate-90 bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+        <Button className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]">
+          <IconBrandFacebook className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+            FaceBook
+          </span>
+          <BottomGradient />
+        </Button>
+      </div>
+      <div>
+        {type === "Register" ? (
+          <p>
+            Already have an account?{" "}
+            <a
+              onClick={() => router.push("/login")}
+              className="cursor-pointer text-violet-950"
+            >
+              Login
+            </a>
+          </p>
+        ) : (
+          <p>
+            Don&apos;t have an account?{" "}
+            <a
+              onClick={() => router.push("/register")}
+              className="cursor-pointer underline underline-offset-2"
+            >
+              Register
+            </a>
+          </p>
+        )}
+      </div>
     </div>
   );
 };

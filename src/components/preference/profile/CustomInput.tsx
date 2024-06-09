@@ -10,6 +10,7 @@ import { z } from "zod";
 import { Control, FieldPath } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import ProfileUploader from "./ProfileUploader";
 
 const CustomInput = ({
   control,
@@ -20,6 +21,8 @@ const CustomInput = ({
   className,
   itemClassName,
   textArea,
+  profileUploader,
+  imageUrl,
 }: {
   control: Control<z.infer<typeof profileSchema>>;
   name: FieldPath<z.infer<typeof profileSchema>>;
@@ -29,6 +32,8 @@ const CustomInput = ({
   className?: string;
   itemClassName?: string;
   textArea?: boolean;
+  profileUploader?: boolean;
+  imageUrl?: string;
 }) => {
   return (
     <FormField
@@ -44,6 +49,12 @@ const CustomInput = ({
                 placeholder={placeholder}
                 rows={5}
                 {...field}
+                value={(field.value as string) || ""}
+              />
+            ) : profileUploader && imageUrl ? (
+              <ProfileUploader
+                fieldChange={field.onChange}
+                mediaUrl={imageUrl}
               />
             ) : (
               <Input
@@ -52,6 +63,8 @@ const CustomInput = ({
                 {...field}
                 type={inputType}
                 autoComplete="true"
+                {...field}
+                value={(field.value as string) || ""}
               />
             )}
           </FormControl>
