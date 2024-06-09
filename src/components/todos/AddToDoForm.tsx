@@ -98,7 +98,7 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
       <DialogTrigger asChild>
         <Button>Add Todos</Button>
       </DialogTrigger>
-      <DialogContent className="bg-violet-400 sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add ToDos</DialogTitle>
         </DialogHeader>
@@ -116,7 +116,8 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
                     <FormLabel className="text-right">Title</FormLabel>
                     <FormControl>
                       <Input
-                        className="col-span-3 w-full border-none bg-violet-200"
+                        divClassName="col-span-3"
+                        className="w-full"
                         placeholder="Task title"
                         {...field}
                         type="text"
@@ -134,7 +135,8 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
                     <FormLabel className="text-right">Tags</FormLabel>
                     <FormControl>
                       <Input
-                        className="col-span-3 w-full border-none bg-violet-200"
+                        divClassName="col-span-3"
+                        className="w-full"
                         placeholder="tags"
                         {...field}
                         type="text"
@@ -152,7 +154,8 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
                     <FormLabel className="text-right">Description</FormLabel>
                     <FormControl>
                       <Textarea
-                        className="col-span-3 w-full border-none bg-violet-200"
+                        divClassName="col-span-3"
+                        className="w-full"
                         placeholder="Description"
                         {...field}
                       />
@@ -169,9 +172,8 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
-                      variant={"outline"}
                       className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-[280px] justify-start border-b-2 border-primary bg-transparent text-left font-normal",
                         !date && "text-muted-foreground",
                       )}
                     >
@@ -188,14 +190,17 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
                       <SelectTrigger>
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
-                      <SelectContent position="popper">
+                      <SelectContent
+                        className="border-b-2 border-primary"
+                        position="popper"
+                      >
                         <SelectItem value="0">Today</SelectItem>
                         <SelectItem value="1">Tomorrow</SelectItem>
                         <SelectItem value="3">In 3 days</SelectItem>
                         <SelectItem value="7">In a week</SelectItem>
                       </SelectContent>
                     </Select>
-                    <div className="rounded-md border">
+                    <div className="rounded-md border-b-2 border-primary">
                       <Calendar
                         mode="single"
                         selected={date}

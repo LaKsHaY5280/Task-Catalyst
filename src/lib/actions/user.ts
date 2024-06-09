@@ -260,6 +260,7 @@ export async function setCookie(secret: string) {
   }
 }
 
+// ============================== GENERATE RANDOM USERNAME
 function generateRandomUsername(): string {
   const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
   let username = "";

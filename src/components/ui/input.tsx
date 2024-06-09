@@ -5,10 +5,12 @@ import { useMotionTemplate, useMotionValue, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  divClassName?: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, divClassName, type, ...props }, ref) => {
     const radius = 100; // change this to increase the rdaius of the hover effect
     const [visible, setVisible] = React.useState(false);
 
@@ -35,7 +37,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
-        className="group/input rounded-sm p-[2px] transition duration-300"
+        className={cn(
+          "group/input rounded-sm p-[2px] transition duration-300",
+          divClassName,
+        )}
       >
         <input
           type={type}
