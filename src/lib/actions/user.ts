@@ -256,25 +256,6 @@ export async function uploadFile(file: any) {
   }
 }
 
-// ============================== GET FILE URL
-export async function getFilePreview(fileId: string) {
-  try {
-    const fileUrl = storage.getFilePreview(
-      config.storageId!,
-      fileId,
-      2000,
-      2000,
-      ImageGravity.Top,
-      100,
-    );
-
-    if (!fileUrl) throw Error;
-
-    return fileUrl;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 // ============================== DELETE FILE
 export async function deleteFile(fileId: string) {
@@ -302,7 +283,15 @@ export async function updateUser(formdata: FormData, user: IProfile) {
       if (!uploadedFile) throw Error;
 
       // Get new file url
-      const fileUrl = getFilePreview(uploadedFile.$id);
+      const fileUrl = storage.getFilePreview(
+        config.storageId!,
+        uploadedFile.$id,
+        2000,
+        2000,
+        ImageGravity.Top,
+        100,
+      );
+
       if (!fileUrl) {
         await deleteFile(uploadedFile.$id);
         throw Error;
@@ -321,6 +310,8 @@ export async function updateUser(formdata: FormData, user: IProfile) {
       config.userCollectionId!,
       user.userId,
       {
+        imageUrl: image.imageUrl,
+        imageId: image.imageId,
         fname: user.fname,
         lname: user.lname,
         username: user.username,

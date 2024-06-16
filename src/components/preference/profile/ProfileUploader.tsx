@@ -48,13 +48,13 @@ const ProfileUploader = ({ fieldChange, mediaUrl }: ProfileUploaderProps) => {
         <Image
           src={fileUrl || ""}
           alt="image"
-          width={24}
-          height={24}
-          className="h-24 w-24 rounded-full object-cover object-top"
+          width={500}
+          height={500}
+          className="rounded-full object-cover object-top"
         />
-        <p className="text-primary-500 small-regular md:bbase-semibold">
+        {/* <p className="text-primary-500 small-regular md:bbase-semibold">
           Change profile photo
-        </p>
+        </p> */}
       </div>
     </div>
   );

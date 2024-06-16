@@ -9,10 +9,8 @@ import { profileSchema } from "@/lib/validation/user";
 import { useRouter } from "next/navigation";
 import CustomInput from "./CustomInput";
 import { Models } from "node-appwrite";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ProfileUploader from "./ProfileUploader";
-import { getFile, updateUser } from "@/lib/actions/user";
+import { updateUser } from "@/lib/actions/user";
 
 const ProfileForm = ({ user }: { user: Models.Document }) => {
   const router = useRouter();
@@ -87,19 +85,19 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
         onSubmit={form.handleSubmit(() => onSubmit(form.getValues()))}
         className="flex h-full w-full items-start justify-between gap-10 rounded-xl border-4 border-violet-700 p-10 shadow-[0px_0px_0px_5px_rgba(109,_40,_217,_0.4),_0px_0px_0px_10px_rgba(109,_40,_217,_0.3),_0px_0px_0px_15px_rgba(109,_40,_217,_0.2),_0px_0px_0px_20px_rgba(109,_40,_217,_0.1),_0px_0px_0px_25px_rgba(109,_40,_217,_0.05)]"
       >
-        <div className="flex h-full flex-col items-center justify-start">
-          <Avatar className="h-52 w-52">
+        <div className="flex h-full w-fit flex-col items-center justify-start">
+          {/* <Avatar className="h-52 w-52">
             <AvatarImage src={user.imageUrl ? user.imageUrl : ""} />
             <AvatarFallback className="text-9xl text-primary dark:text-white">
               {initials}
             </AvatarFallback>
-          </Avatar>
+          </Avatar> */}
           <CustomInput
             control={form.control}
             name="file"
-            label="File"
+            label=""
             placeholder="hii"
-            itemClassName=" w-[49%]"
+            itemClassName=" w-full h-full"
             profileUploader
             imageUrl={user.imageUrl}
           />
