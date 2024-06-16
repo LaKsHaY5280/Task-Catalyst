@@ -30,7 +30,7 @@ export interface IProfile {
   lname: string;
   username: string;
   email: string;
-  // file: File[];
+  file?: File;
   imageId: string;
   imageUrl: URL | string;
   bio?: string;
@@ -43,4 +43,11 @@ export interface IProfile {
   // datesheet: string;
   // recentTodos: string;
   // notes: string;
+  fileName?: string;
+  filePath?: string;
+  filelastModified?: number;
+  filelastModifiedDate?: Date;
+  filewebkitRelativePath?: string;
+  filesize?: number;
+  filetype?: string;
 }

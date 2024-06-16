@@ -6,6 +6,8 @@ import { cookies, headers } from "next/headers";
 import { INewUser, IProfile } from "../types/user";
 import { config } from "../utils";
 import { redirect } from "next/navigation";
+import { InputFile } from "node-appwrite/file";
+import { storage } from "../client-sdk";
 
 // ============================================================
 // AUTH
@@ -148,9 +150,169 @@ export async function signOutAccount() {
   }
 }
 
-// ============================== UPDATE USER
-export async function updateUser(user: IProfile) {
+// ============================== SIGNUP USING GOOGLE
+export async function signUpWithGoogle() {
+  const { account } = await createAdminClient();
+
+  const origin = headers().get("origin");
+
+  const redirectUrl = await account.createOAuth2Token(
+    OAuthProvider.Google,
+    `${origin}/oauth`,
+    `${origin}/register`,
+  );
+
+  return redirect(redirectUrl);
+}
+
+// ============================== LOGGING IN USER VIA GOOGLE
+export async function loginwithGoogle(userId: string, secret: string) {
   try {
+    const { account, databases } = await createAdminClient();
+    const session = await account.createSession(userId, secret);
+
+    if (!session) throw new Error("There was an error signing in.");
+
+    await setCookie(session.secret);
+
+    const Gaccount = await getAccount();
+
+    if (!Gaccount)
+      throw new Error(
+        "There was an error signing in. Please check your email and password.",
+      );
+
+    const name = Gaccount.name.split(" ");
+
+    const avatarUrl = new URL(
+      `https://cloud.appwrite.io/v1/avatars/initials?name=${Gaccount.name}&project=${config.projectId}`,
+    );
+
+    const userExists = await databases.listDocuments(
+      config.databaseId!,
+      config.userCollectionId!,
+      [Query.equal("email", Gaccount.email)],
+    );
+
+    if (userExists.documents.length === 0) {
+      await saveUserToDB({
+        userId: Gaccount.$id,
+        email: Gaccount.email,
+        fname: name[0],
+        lname: name[1],
+        imageUrl: Gaccount.prefs.avatar || avatarUrl,
+        username: generateRandomUsername(),
+      });
+    }
+
+    // redirect("/");
+  } catch (error) {
+    throw new Error(
+      "There was an error signing in. Please check your email and password.",
+    );
+  }
+}
+
+// ============================== COOKIE
+export async function setCookie(secret: string) {
+  try {
+    cookies().set("task-catalyst-session", secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+  } catch (error) {
+    throw new Error("There was an error setting the cookie. Please try again.");
+  }
+}
+
+// ============================== GENERATE RANDOM USERNAME
+function generateRandomUsername(): string {
+  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let username = "";
+
+  for (let i = 0; i < 8; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    username += characters[randomIndex];
+  }
+
+  return `@${username}`;
+}
+
+// ============================== UPLOAD FILE
+export async function uploadFile(file: any) {
+  console.log(file);
+  try {
+    const uploadedFile = await storage.createFile(
+      config.storageId!,
+      ID.unique(),
+      file,
+    );
+
+    return uploadedFile;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== GET FILE URL
+export async function getFilePreview(fileId: string) {
+  try {
+    const fileUrl = storage.getFilePreview(
+      config.storageId!,
+      fileId,
+      2000,
+      2000,
+      ImageGravity.Top,
+      100,
+    );
+
+    if (!fileUrl) throw Error;
+
+    return fileUrl;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== DELETE FILE
+export async function deleteFile(fileId: string) {
+  try {
+    const { storage } = await createAdminClient();
+
+    await storage.deleteFile(config.storageId!, fileId);
+
+    return { status: "ok" };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== UPDATE USER
+export async function updateUser(formdata: FormData, user: IProfile) {
+  try {
+    let image = {
+      imageUrl: user.imageUrl,
+      imageId: user.imageId,
+    };
+
+    if (formdata) {
+      const uploadedFile = await uploadFile(formdata.get("file"));
+      if (!uploadedFile) throw Error;
+
+      // Get new file url
+      const fileUrl = getFilePreview(uploadedFile.$id);
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id);
+        throw Error;
+      }
+
+      console.log(fileUrl);
+
+      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id };
+    }
+
     const { databases } = await createAdminClient();
 
     //  Update user
@@ -189,86 +351,4 @@ export async function updateUser(user: IProfile) {
   } catch (error) {
     console.log(error);
   }
-}
-
-// ============================== SIGNUP USING GOOGLE
-export async function signUpWithGoogle() {
-  const { account } = await createAdminClient();
-
-  const origin = headers().get("origin");
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Google,
-    `${origin}/oauth`,
-    `${origin}/register`,
-  );
-
-  return redirect(redirectUrl);
-}
-
-// ============================== LOGGING IN USER VIA GOOGLE
-export async function loginwithGoogle(userId: string, secret: string) {
-  try {
-    const { account } = await createAdminClient();
-    const session = await account.createSession(userId, secret);
-
-    if (!session) throw new Error("There was an error signing in.");
-
-    await setCookie(session.secret);
-
-    const Gaccount = await getAccount();
-
-    if (!Gaccount)
-      throw new Error(
-        "There was an error signing in. Please check your email and password.",
-      );
-
-    const name = Gaccount.name.split(" ");
-
-    const avatarUrl = new URL(
-      `https://cloud.appwrite.io/v1/avatars/initials?name=${Gaccount.name}&project=${config.projectId}`,
-    );
-
-    await saveUserToDB({
-      userId: Gaccount.$id,
-      email: Gaccount.email,
-      fname: name[0],
-      lname: name[1],
-      imageUrl: Gaccount.prefs.avatar || avatarUrl,
-      username: generateRandomUsername(),
-    });
-
-    // redirect("/");
-  } catch (error) {
-    throw new Error(
-      "There was an error signing in. Please check your email and password.",
-    );
-  }
-}
-
-// ============================== COOKIE
-export async function setCookie(secret: string) {
-  try {
-    cookies().set("task-catalyst-session", secret, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
-  } catch (error) {
-    throw new Error("There was an error setting the cookie. Please try again.");
-  }
-}
-
-// ============================== GENERATE RANDOM USERNAME
-function generateRandomUsername(): string {
-  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-  let username = "";
-
-  for (let i = 0; i < 8; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    username += characters[randomIndex];
-  }
-
-  return `@${username}`;
 }

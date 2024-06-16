@@ -12,15 +12,25 @@ type ProfileUploaderProps = {
 const ProfileUploader = ({ fieldChange, mediaUrl }: ProfileUploaderProps) => {
   const [file, setFile] = useState<File>();
   const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
+  const [blob, setBlob] = useState<Blob | null>(null); // Add state to store Blob
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
-      setFile(acceptedFiles[0]);
-      fieldChange(acceptedFiles[0]);
-      setFileUrl(convertFileToUrl(acceptedFiles[0]));
+      const newFile = acceptedFiles[0];
+      setFile(newFile);
+      fieldChange(newFile);
+
+      // Convert file to Blob
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const arrayBuffer = event.target?.result as ArrayBuffer; // Handle potential undefined
+        setBlob(new Blob([arrayBuffer], { type: newFile.type }));
+      };
+      reader.readAsArrayBuffer(newFile);
+
+      setFileUrl(convertFileToUrl(newFile));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [file],
+    [fieldChange], // Only include necessary dependencies
   );
 
   const { getRootProps, getInputProps } = useDropzone({

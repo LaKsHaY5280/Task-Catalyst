@@ -28,7 +28,7 @@ export const authFormSchema = (type: string) =>
 
 // ============================== PROFILE SCHEMA
 export const profileSchema = z.object({
-  file: z.custom<File[]>(),
+  file: z.custom<File>(),
   fname: z.string().min(2, { message: "Name must be at least 2 characters." }),
   lname: z.string().min(1, { message: "Name must be at least 1 character." }),
   username: z
@@ -45,4 +45,11 @@ export const profileSchema = z.object({
   // datesheet: z.string(),
   // recentTodos: z.string(),
   // notes: z.string(),
+  fileName: z.string().optional(),
+  filePath: z.string().optional(),
+  filelastModified: z.number().optional(),
+  filelastModifiedDate: z.date().optional(),
+  filewebkitRelativePath: z.string().optional(),
+  filesize: z.number().optional(),
+  filetype: z.string().optional(),
 });

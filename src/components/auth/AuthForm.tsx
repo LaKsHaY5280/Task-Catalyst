@@ -14,7 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { INewUser } from "@/lib/types/user";
 import React from "react";
-import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
+import { IconBrandGoogle } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import BottomGradient from "../ui/BottomGradient";
 import CustomButton from "./CustomButton";
@@ -154,7 +154,7 @@ const AuthForm = ({ type }: { type: string }) => {
       </Form>
       <div className="flex w-full items-center justify-between gap-5 pb-3">
         <Button
-          className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+          className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
           onClick={onGoogleSubmit}
         >
           <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
@@ -163,14 +163,7 @@ const AuthForm = ({ type }: { type: string }) => {
           </span>
           <BottomGradient />
         </Button>
-        <div className="h-[1.5px] w-4/12 rotate-90 bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-        <Button className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]">
-          <IconBrandFacebook className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-          <span className="text-sm text-neutral-700 dark:text-neutral-300">
-            FaceBook
-          </span>
-          <BottomGradient />
-        </Button>
+
       </div>
       <div>
         {type === "Register" ? (

@@ -8,7 +8,7 @@ import PreferenceMenu from "./PreferenceMenu";
 import { Models } from "node-appwrite";
 import { SparklesCore } from "../ui/sparkles";
 
-const Navbar = ({ user }: { user: Models.Document }) => {
+const Navbar = ({ user }: { user?: Models.Document }) => {
   return (
     <div className="relative flex w-full items-center justify-between py-3 pr-3">
       <SparklesCore
@@ -48,8 +48,10 @@ const Navbar = ({ user }: { user: Models.Document }) => {
       </div>
       <div className="flex w-fit items-center justify-end gap-2">
         <ModeToggle />
-
-        <PreferenceMenu user={user} />
+        {
+          // @ts-ignore
+          user && <PreferenceMenu user={user} />
+        }
       </div>
       <BottomGradient hover />
     </div>

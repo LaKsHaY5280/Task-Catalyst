@@ -12,7 +12,7 @@ import { Models } from "node-appwrite";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ProfileUploader from "./ProfileUploader";
-import { updateUser } from "@/lib/actions/user";
+import { getFile, updateUser } from "@/lib/actions/user";
 
 const ProfileForm = ({ user }: { user: Models.Document }) => {
   const router = useRouter();
@@ -42,15 +42,16 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
 
   async function onSubmit(data: z.infer<typeof profileSchema>) {
     setIsLoading(true);
-
     try {
-      const updatedUser = await updateUser({
+      const formData = new FormData();
+      formData.append("file", data.file);
+
+      const updatedUser = await updateUser(formData, {
         userId: user.$id,
         fname: data.fname,
         lname: data.lname,
         username: data.username,
         email: data.email,
-        // file: file,
         imageUrl: user.imageUrl,
         imageId: user.imageId,
         bio: data.bio || "",
@@ -83,7 +84,7 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(() => onSubmit(form.getValues()))}
         className="flex h-full w-full items-start justify-between gap-10 rounded-xl border-4 border-violet-700 p-10 shadow-[0px_0px_0px_5px_rgba(109,_40,_217,_0.4),_0px_0px_0px_10px_rgba(109,_40,_217,_0.3),_0px_0px_0px_15px_rgba(109,_40,_217,_0.2),_0px_0px_0px_20px_rgba(109,_40,_217,_0.1),_0px_0px_0px_25px_rgba(109,_40,_217,_0.05)]"
       >
         <div className="flex h-full flex-col items-center justify-start">
@@ -93,7 +94,7 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
               {initials}
             </AvatarFallback>
           </Avatar>
-          {/* <CustomInput
+          <CustomInput
             control={form.control}
             name="file"
             label="File"
@@ -101,7 +102,7 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
             itemClassName=" w-[49%]"
             profileUploader
             imageUrl={user.imageUrl}
-          /> */}
+          />
           <div className="w-full">
             <div>timetable</div>
             <div>syllabus</div>
