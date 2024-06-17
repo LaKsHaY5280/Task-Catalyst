@@ -43,11 +43,32 @@ export interface IProfile {
   // datesheet: string;
   // recentTodos: string;
   // notes: string;
-  fileName?: string;
-  filePath?: string;
-  filelastModified?: number;
-  filelastModifiedDate?: Date;
-  filewebkitRelativePath?: string;
-  filesize?: number;
-  filetype?: string;
+}
+
+
+
+export interface IGetUser {
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: [];
+  $databaseId: string;
+  $collectionId: string;
+  userId: string;
+  fname: string;
+  lname: string;
+  username: string;
+  email: string;
+  imageUrl: string;
+  imageId: string;
+  bio: string;
+  course: string;
+  year: number;
+  semester: number;
+  section: string;
+  timetable: string;
+  syllabus: string;
+  datesheet: string;
+  recentTodos: string;
+  notes: string;
 }

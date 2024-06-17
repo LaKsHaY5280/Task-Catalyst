@@ -9,7 +9,6 @@ import { profileSchema } from "@/lib/validation/user";
 import { useRouter } from "next/navigation";
 import CustomInput from "./CustomInput";
 import { Models } from "node-appwrite";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateUser } from "@/lib/actions/user";
 
 const ProfileForm = ({ user }: { user: Models.Document }) => {
@@ -20,7 +19,6 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      // file: [],
       fname: user.fname,
       lname: user.lname,
       username: user.username,
@@ -74,11 +72,6 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
     }
   }
 
-  const { fname, lname } = user;
-
-  const initials =
-    fname.charAt(0).toUpperCase() + lname.charAt(0).toUpperCase();
-
   return (
     <Form {...form}>
       <form
@@ -86,12 +79,6 @@ const ProfileForm = ({ user }: { user: Models.Document }) => {
         className="flex h-full w-full items-start justify-between gap-10 rounded-xl border-4 border-violet-700 p-10 shadow-[0px_0px_0px_5px_rgba(109,_40,_217,_0.4),_0px_0px_0px_10px_rgba(109,_40,_217,_0.3),_0px_0px_0px_15px_rgba(109,_40,_217,_0.2),_0px_0px_0px_20px_rgba(109,_40,_217,_0.1),_0px_0px_0px_25px_rgba(109,_40,_217,_0.05)]"
       >
         <div className="flex h-full w-fit flex-col items-center justify-start">
-          {/* <Avatar className="h-52 w-52">
-            <AvatarImage src={user.imageUrl ? user.imageUrl : ""} />
-            <AvatarFallback className="text-9xl text-primary dark:text-white">
-              {initials}
-            </AvatarFallback>
-          </Avatar> */}
           <CustomInput
             control={form.control}
             name="file"

@@ -45,11 +45,4 @@ export const profileSchema = z.object({
   // datesheet: z.string(),
   // recentTodos: z.string(),
   // notes: z.string(),
-  fileName: z.string().optional(),
-  filePath: z.string().optional(),
-  filelastModified: z.number().optional(),
-  filelastModifiedDate: z.date().optional(),
-  filewebkitRelativePath: z.string().optional(),
-  filesize: z.number().optional(),
-  filetype: z.string().optional(),
 });

@@ -7,7 +7,7 @@ import { INewUser, IProfile } from "../types/user";
 import { config } from "../utils";
 import { redirect } from "next/navigation";
 import { InputFile } from "node-appwrite/file";
-import { storage } from "../client-sdk";
+import { account, storage } from "../client-sdk";
 
 // ============================================================
 // AUTH
@@ -16,7 +16,7 @@ import { storage } from "../client-sdk";
 // ============================== SIGN UP
 export async function createUserAccount(user: INewUser) {
   try {
-    const { account, avatars } = await createAdminClient();
+    const { account } = await createAdminClient();
     const newAccount = await account.create(
       ID.unique(),
       user.email,
@@ -45,7 +45,16 @@ export async function createUserAccount(user: INewUser) {
       imageUrl: avatarUrl,
     });
 
-    await signInAccount({ email: user.email, password: user.password });
+    await signInAccount({
+      email: user.email,
+      password: user.password,
+    });
+
+    // if (session) {
+    //   await createVerification(
+    //     "http://localhost:3000/email-verify", // url
+    //   );
+    // }
 
     return newUser;
   } catch (error) {
@@ -89,18 +98,36 @@ export async function signInAccount(user: { email: string; password: string }) {
       user.password,
     );
 
-    if (!session)
-      throw new Error(
-        "There was an error signing in. Please check your email and password.",
-      );
+    if (!session) throw new Error("There was an error signing in.");
 
     await setCookie(session.secret);
-
     return session;
   } catch (error) {
     throw new Error(
       "There was an error signing in. Please check your email and password.",
     );
+  }
+}
+
+// ============================== CREATE VERIFICATION
+export async function createVerification(url: string) {
+  try {
+    const { account } = await createSessionClient();
+    const token = await account.createVerification(url);
+    console.log(token);
+    return token;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== UPDATE VERIFICATION
+export async function updateVerification(userId: string, secret: string) {
+  try {
+    const { account } = await createSessionClient();
+    await account.updateVerification(userId, secret);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -111,7 +138,6 @@ export async function getAccount() {
     return await account.get();
   } catch (error) {
     console.log(error);
-    return null;
   }
 }
 
@@ -242,7 +268,6 @@ function generateRandomUsername(): string {
 
 // ============================== UPLOAD FILE
 export async function uploadFile(file: any) {
-  console.log(file);
   try {
     const uploadedFile = await storage.createFile(
       config.storageId!,
