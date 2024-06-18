@@ -10,7 +10,7 @@ import { SparklesCore } from "../ui/sparkles";
 
 const Navbar = ({ user }: { user?: Models.Document }) => {
   return (
-    <div className="relative flex w-full items-center justify-between py-3 pr-3">
+    <div className="relative flex h-[4.5rem] w-full items-center justify-between py-3 pr-3">
       <SparklesCore
         background="transparent"
         minSize={0.4}
