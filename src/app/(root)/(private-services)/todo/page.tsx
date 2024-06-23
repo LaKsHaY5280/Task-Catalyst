@@ -1,10 +1,8 @@
-import { getUserPosts } from "@/lib/actions/todos";
 import { getCurrentUser } from "@/lib/actions/user";
 
 import { DataTable } from "@/components/todos/TodoContainer";
 import { columns } from "@/components/todos/ui/Columns";
-import { z } from "zod";
-import { taskSchema } from "@/lib/validation/todos";
+import { IGetUser } from "@/lib/types/user";
 
 // async function getTasks(userId: string) {
 //   const data = await getUserPosts(userId);
@@ -15,7 +13,7 @@ import { taskSchema } from "@/lib/validation/todos";
 // }
 
 const ToDopage = async () => {
-  const user = await getCurrentUser();
+  const user = (await getCurrentUser()) as IGetUser;
 
   if (!user) throw new Error("User not found");
 
@@ -23,11 +21,7 @@ const ToDopage = async () => {
 
   // const tasks = await getTasks(user.userId);
 
-  return (
-
-        <DataTable data={""} columns={columns} />
-
-  );
+  return <DataTable user={user} data={""} columns={columns} />;
 };
 
 export default ToDopage;

@@ -16,11 +16,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import {
   Table,
   TableBody,
   TableCell,
@@ -30,15 +25,18 @@ import {
 } from "../ui/table";
 import { DataTableToolbar } from "./ui/Sidebar";
 import { DataTablePagination } from "./ui/Pagination";
+import { IGetUser } from "@/lib/types/user";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[] | any;
+  user: IGetUser;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  user,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -71,17 +69,16 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      className="h-full w-full border-primary"
-    >
-      <ResizablePanel defaultSize={15} className="">
-        <DataTableToolbar table={table} />
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel className="flex flex-col items-center justify-center">
-        <Table className=" h-full">
-          <TableHeader>
+    <div className="flex h-full w-full items-center justify-center border-primary">
+      <div className="relative h-full w-[20%]">
+        <DataTableToolbar table={table} user={user} />
+
+        <span className="absolute inset-y-0 -right-px block h-full w-px bg-gradient-to-b from-transparent via-violet-500 to-transparent opacity-100 transition duration-500" />
+        <span className="absolute inset-y-10 -right-px mx-auto block h-1/2 w-px bg-gradient-to-b from-transparent via-indigo-500 to-transparent opacity-100 blur-sm transition duration-500" />
+      </div>
+      <div className="flex h-full w-full flex-col items-center justify-center">
+        <Table className="h-full">
+          <TableHeader className="h-14">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -129,7 +126,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
         <DataTablePagination table={table} />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      </div>
+    </div>
   );
 }

@@ -58,18 +58,25 @@ export const statuses = [
 
 export const priorities = [
   {
-    label: "Low",
-    value: "low",
-    icon: MoveDown,
-  },
-  {
-    label: "Medium",
-    value: "medium",
-    icon: MoveRight,
+    label: "Critical",
+    value: "critical",
   },
   {
     label: "High",
     value: "high",
-    icon: MoveUp,
+  },
+  {
+    label: "Neutral",
+    value: "neutral",
+  },
+  {
+    label: "Low",
+    value: "low",
+  },
+  {
+    label: "Unknown",
+    value: "unknown",
   },
 ];
+
+export const tags = [];
