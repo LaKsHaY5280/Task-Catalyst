@@ -48,13 +48,85 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
+      const label = labels.find((label) => label.value === row.original.labels);
 
       return (
         <div className="flex space-x-2">
           {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue("title")}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "desc",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Desccription" />
+    ),
+    cell: ({ row }) => {
+      const label = labels.find((label) => label.value === row.original.labels);
+
+      return (
+        <div className="flex space-x-2">
+          {label && <Badge variant="outline">{label.label}</Badge>}
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("desc")}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "labels",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Labels" />
+    ),
+    cell: ({ row }) => {
+      const label = labels.find((label) => label.value === row.original.labels);
+
+      return (
+        <div className="flex space-x-2">
+          {label && <Badge variant="outline">{label.label}</Badge>}
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("labels")}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "dueDate",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Due Date" />
+    ),
+    cell: ({ row }) => {
+      const label = labels.find((label) => label.value === row.original.labels);
+
+      return (
+        <div className="flex space-x-2">
+          {label && <Badge variant="outline">{label.label}</Badge>}
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("dueDate")}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "tags",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tags" />
+    ),
+    cell: ({ row }) => {
+      const label = labels.find((label) => label.value === row.original.labels);
+
+      return (
+        <div className="flex space-x-2">
+          {label && <Badge variant="outline">{label.label}</Badge>}
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("tags")}
           </span>
         </div>
       );

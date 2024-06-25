@@ -73,8 +73,11 @@ const AddToDoForm = ({ user }: { user: Models.Document }) => {
       const todo = {
         title: data.title,
         desc: data.desc,
+        priority: data.priority || "neutral",
+        labels: data.labels || "miscellaneous",
         tags: tags || data.tags || undefined,
         dueDate: date,
+        status: data.status || "Todo",
         creator: user.userId,
       };
 

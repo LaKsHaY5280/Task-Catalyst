@@ -45,9 +45,8 @@ export function DataTable<TData, TValue>({
     [],
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
   const table = useReactTable({
-    data,
+    data: data.documents,
     columns,
     state: {
       sorting,
@@ -67,6 +66,9 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  // console.log(table);
+
 
   return (
     <div className="flex h-full w-full items-center justify-center border-primary">
